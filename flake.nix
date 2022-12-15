@@ -74,10 +74,10 @@
 
             defaultPythonPkg = pkgs.${defaultPython};
             # Install pre-commit hooks
-            installPrecommit = ''
-              export PRE_COMMIT_HOME=$(pwd)/.pre-commit-cache
-              [[ -a .pre-commit-config.yaml ]] && \
-                echo "Installing pre-commit hooks"; pre-commit install '';
+            # installPrecommit = ''
+            #   export PRE_COMMIT_HOME=$(pwd)/.pre-commit-cache
+            #   [[ -a .pre-commit-config.yaml ]] && \
+            #     echo "Installing pre-commit hooks"; pre-commit install '';
             # Report how to install poetry packages
             reportPoetry = ''
               ${pkgs.pastel}/bin/pastel paint -n green "
@@ -93,7 +93,6 @@
               poetry env use ${defaultPythonPkg.interpreter}
             '';
           in ''
-            ${installPrecommit}
             ${setPoetryEnv}
             ${reportPoetry}
             ${createEnvrc}
