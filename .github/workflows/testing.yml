@@ -43,6 +43,8 @@ jobs:
       run: |
         pre-commit try-repo . --files CITATION.cff
     - name: Test entrypoint with simple expected failure
+      # windows does not have exit command
+      if: matrix.os != 'windows-latest'
       run: |
         echo "this does not belong here." >> CITATION.cff
         poetry run validate-citation-file-format CITATION.cff && exit 1 || exit 0
