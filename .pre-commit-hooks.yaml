@@ -1,0 +1,8 @@
+- id: validate-citation-file-format
+  name: validate-citation-file-format
+  description: "Validate Citation File Format (CFF) files."
+  entry: validate-citation-file-format
+  language: python
+  minimum_pre_commit_version: 2.9.2
+  require_serial: true
+  types_or: [python, pyi]

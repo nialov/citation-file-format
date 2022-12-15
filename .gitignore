@@ -11,3 +11,6 @@ venv3*/
 node_modules
 package.json
 package-lock.json
+.direnv
+.envrc
+.pre-commit-cache/
