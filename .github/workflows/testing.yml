@@ -28,7 +28,23 @@ jobs:
         python3 --version
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip setuptools wheel
+        python3 -m pip install --upgrade pip setuptools wheel poetry pre-commit
         python3 -m pip install -r requirements.txt
     - name: Run pytest
       run: pytest
+    - name: Install with poetry
+      run: poetry install
+    - name: Test entrypoint
+      run: |
+        poetry run validate-citation-file-format --help
+        poetry run validate-citation-file-format CITATION.cff
+    - name: Test pre-commit-hook with valid CITATION.cff
+      run: |
+        pre-commit try-repo . --files CITATION.cff
+    - name: Test entrypoint with simple expected failure
+      run: |
+        echo "this does not belong here." >> CITATION.cff
+        poetry run validate-citation-file-format CITATION.cff && exit 1 || exit 0
+    - name: Test pre-commit-hook with simple expected failure
+      run: |
+        pre-commit try-repo . --files CITATION.cff && exit 1 || exit 0
