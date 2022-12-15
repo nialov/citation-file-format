@@ -2,8 +2,10 @@ import argparse
 import json
 from pathlib import Path
 from typing import List
+import sys
 
 import jsonschema
+from jsonschema.exceptions import ValidationError
 from ruamel.yaml import YAML
 
 
@@ -41,11 +43,17 @@ def validate(data_paths:List[Path], schema_path:Path):
             # with open(schema_path, "r") as sf:
             with schema_path.open(mode="r") as sf:
                 schema_data = json.loads(sf.read())
-                jsonschema.validate(
-                    instance=yml_data,
-                    schema=schema_data,
-                    format_checker=jsonschema.FormatChecker(),
-                )
+                try:
+                    jsonschema.validate(
+                        instance=yml_data,
+                        schema=schema_data,
+                        format_checker=jsonschema.FormatChecker(),
+                    )
+                except ValidationError:
+                    print(f"ERROR: Failed to validate {data_path}\n", file=sys.stderr)
+                    raise
+
+
 
 
 if __name__ == "__main__":
